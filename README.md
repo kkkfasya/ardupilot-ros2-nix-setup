@@ -176,7 +176,7 @@ du -sh ~/sim/ardu_ws/src/*
 Kalo nanti ada penambahan angka berarti masih dalam proses impor. Ini emang lama banget terus gaada kayak tanda tanda lagi proses gitu.
 
 Ini total yang diimpor nanti (~3.7 GB):
-![alt text](image.png)
+![alt text](assets/image.png)
 
 Setelah selesai, cek bahwa versinya sudah benar. Hasilnya harus diawali `ba6f4e1` (ardupilot_gz) dan `fb77356` (ardupilot):
 
@@ -186,7 +186,7 @@ git -C ~/sim/ardu_ws/src/ardupilot rev-parse HEAD | cut -c1-7
 ```
 
 Hasil:
-![alt text](image_2.png)
+![alt text](assets/image_2.png)
 
 Kalau import terputus di tengah (internet putus, dll.), jalankan ulang perintah `vcs import` yang sama. Kalau muncul error soal folder yang sudah ada tetapi bukan repositori git yang utuh, atau hasil cek di atas tidak cocok, hapus folder repositori yang bermasalah saja (misalnya `rm -rf ~/sim/ardu_ws/src/ardupilot_gz`) lalu jalankan ulang `vcs import`.
 
@@ -217,7 +217,7 @@ grep THISFIRMWARE ~/sim/ardu_ws/src/ardupilot/ArduCopter/version.h
 ```
 
 Hasil grep yang diharapkan:
-![alt text](image_3.png)
+![alt text](assets/image_3.png)
 
 Versi di sini adalah 4.7.2. Kalau firmware di drone berbeda, baca dulu catatan versi di bagian 7 sebelum mengubah apa pun.
 
@@ -311,7 +311,7 @@ echo $GZ_SIM_RESOURCE_PATH | tr ':' '\n' | grep ardupilot_gazebo
 gz sim -v4 -r iris_runway.sdf
 ```
 Kalo berhasil nanti kebuka window baru (gazebo) kaya gini:
-![alt text](image_4.png)
+![alt text](assets/image_4.png)
 
 Drone Iris harus muncul di landasan. Pada repositori ardupilot_gazebo ada isu terbuka dengan judul iris_with_standoffs import error when using Gazebo Harmonic and ROS Jazzy yang gejalanya sama. Isinya belum kami baca, jadi cek di GitHub kalau ada pembaruan.
 
@@ -326,7 +326,7 @@ ls /usr/share/GeographicLib
 Skrip dataset wajib dijalankan dan butuh internet. Jangan memakai `sudo ros2 run ...` karena sudo memakai PATH sendiri dan memunculkan `sudo: ros2: command not found`. Pakai path lengkap seperti di atas.
 
 Hasil setelah install yang diharapkan:
-![alt text](image_5.png)
+![alt text](assets/image_5.png)
 
 ## 6. Menjalankan simulasi (jalur MAVROS)
 
@@ -348,7 +348,7 @@ sim_vehicle.py -v ArduCopter -f gazebo-iris --model JSON --console
 ```
 
 Run pertama mengompilasi ArduCopter dan butuh waktu dan memori. Kalau sim_vehicle.py mengeluh soal folder, jalankan dari `~/sim/ardu_ws/src/ardupilot/ArduCopter`. Setelah EKF siap, tes tanpa ROS dulu di konsol MAVProxy (terminal 2):
-![alt text](image_6.png)
+![alt text](assets/image_6.png)
 Tunggu sampai console ada info `EKF3 IMU origin set` baru execute perintah di bawah
 `mode guided`, `arm throttle`, `takeoff 5`. Drone di Gazebo harusnya ikut naik.
 
@@ -357,7 +357,7 @@ Tunggu sampai console ada info `EKF3 IMU origin set` baru execute perintah di ba
 ```bash
 ros2 launch mavros apm.launch fcu_url:=udp://127.0.0.1:14550@
 ```
-![alt text](image_7.png)
+![alt text](assets/image_7.png)
 Kalo tampilannya kayak gambar di atas berarti berhasil terhubung.
 
 **Gunakan port 14550.** Port 14551 menyebabkan MAVROS tidak menerima satu pun paket, dengan gejala peringatan `VER: ... timeout` dan `your FCU don't support AUTOPILOT_VERSION`. Kalau MAVROS diam, di konsol MAVProxy ketik `output` untuk melihat tujuan keluaran, atau tambahkan dengan `output add 127.0.0.1:14550`.
@@ -369,7 +369,7 @@ ros2 topic echo /mavros/imu/data --once
 ros2 service list | grep -E 'set_mode|arming|takeoff'
 ```
 Hasil yang harusnya keluar:
-![alt text](image_8.png)
+![alt text](assets/image_8.png)
 
 Nama service untuk arm, ganti mode, takeoff, dan parameter sebaiknya dicek dari daftar service di laptopmu, karena belum kami catat lewat percobaan.
 
