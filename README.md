@@ -292,7 +292,7 @@ Kalau daftarnya gaada paket libgz-* atau gz-*, jalankan lagi tapi ganti `-s` den
 
 ```bash
 cd ~/sim/ardu_ws
-colcon build --packages-up-to ardupilot_dds_tests --parallel-workers 1 --event-handlers=console_cohesion+
+colcon build --packages-up-to ardupilot_gazebo --parallel-workers 1 --event-handlers=console_cohesion+
 source install/setup.bash   # kalau zsh: setup.zsh
 ```
 
