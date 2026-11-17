@@ -53,6 +53,12 @@
           doCheck = false;
         };
 
+        microXrceDdsGenSrc = builtins.fetchGit {
+          url = "https://github.com/ardupilot/Micro-XRCE-DDS-Gen.git";
+          rev = "b8840058b81c87e1169a5a0ed4744d7b3dc99e0b";
+          submodules = true;
+        };
+
         arduPython = pkgs.python3.withPackages (py: [
           empy3
           py.lxml
@@ -73,6 +79,8 @@
             (pkgs.colcon.withExtensions [ pkgs.python3Packages.colcon-alias ])
             arduPython
             pkgs.mavproxy
+            pkgs.jdk17
+            pkgs.gradle
             pkgs.geographiclib
             pkgs.sfml
             pkgs.xterm
@@ -93,6 +101,8 @@
           shellHook = ''
             export GZ_VERSION=harmonic
             unset QT_QPA_PLATFORM
+            export JAVA_HOME="${pkgs.jdk17}"
+            export MICRO_XRCE_DDS_GEN_SRC="${microXrceDdsGenSrc}"
 
             export ARDUPILOT_SRC="${ardupilot}"
             export ARDUPILOT_GAZEBO_SRC="${ardupilot_gazebo}"
