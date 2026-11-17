@@ -72,7 +72,20 @@
           py.opencv-python
           py.pyyaml
         ]);
+
+        wsSrc = pkgs.runCommand "ardu-ws-src" { } ''
+          mkdir -p $out/src
+          ln -s ${ardupilot} $out/src/ardupilot
+          ln -s ${ardupilot_gazebo} $out/src/ardupilot_gazebo
+          ln -s ${ardupilot_gz} $out/src/ardupilot_gz
+          ln -s ${micro_ros_agent} $out/src/micro_ros_agent
+          ln -s ${ros_gz} $out/src/ros_gz
+          ln -s ${sdformat_urdf} $out/src/sdformat_urdf
+          ln -s ${microXrceDdsGenSrc} $out/Micro-XRCE-DDS-Gen
+        '';
       in {
+        packages.ardupilot-ws-src = wsSrc;
+
         devShells.default = pkgs.mkShell {
           name = "ardupilot-sitl";
           packages = [
@@ -103,6 +116,7 @@
             unset QT_QPA_PLATFORM
             export JAVA_HOME="${pkgs.jdk17}"
             export MICRO_XRCE_DDS_GEN_SRC="${microXrceDdsGenSrc}"
+            export ARDU_WS_SRC="${wsSrc}"
 
             export ARDUPILOT_SRC="${ardupilot}"
             export ARDUPILOT_GAZEBO_SRC="${ardupilot_gazebo}"
