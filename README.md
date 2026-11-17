@@ -2,6 +2,29 @@
 
 Dokumen ini bisa digunakan untuk membantu kalian setup agar bisa mengikuti pelatihan Vision & Control Programmer Gamaforce 2027. Ini semua berhasil di laptopku, ada beberapa error dan sudah ku fix, jadi harapannya kalian sudah ngga nemuin error yang sama lagi. Kalo nemuin error feel free buat tanya aku yaa. Semoga membantu ges :)
 
+## 0. Jalur Nix (flakes)
+
+Di branch `nix`, semua dependensi (ROS 2 Jazzy, Gazebo Harmonic, MAVROS, Python ArduPilot, JDK 17, Gradle) disediakan oleh flake. Tidak perlu menjalankan `apt install` untuk paket-paket itu.
+
+```bash
+nix develop                 # masuk shell ROS 2 Jazzy + Gazebo + MAVROS + tool ArduPilot
+ardu_ws_init                # buat ~/sim/ardu_ws berisi symlink sumber yang dikunci di flake.lock
+ardu_models_init            # unduh SITL_Models (repo data besar, sekali, butuh internet)
+ardu_build                  # colcon build --packages-up-to ardupilot_dds_tests
+```
+
+Jalankan tiga terminal terpisah di dalam `nix develop`:
+
+```bash
+gz_sim_run                  # Gazebo + iris_runway.sdf
+sitl_run                    # ArduPilot SITL (gazebo-iris, JSON, MAVProxy console)
+mavros_run                  # MAVROS lewat UDP 14550
+```
+
+`sim_env` menyiapkan `install/setup.*` dan `GZ_SIM_RESOURCE_PATH` untuk terminal lain. Cek tanpa menginstal atau membangun apa pun: `nix flake check --no-build` dan `nix build --dry-run .#devShells.x86_64-linux.default`.
+
+Catatan: `SITL_Models` sengaja bukan input flake karena ukurannya, jadi diambil lewat `ardu_models_init`. Dataset GeographicLib untuk MAVROS belum dibungkus otomatis; jalankan langkah dataset jika dibutuhkan. Bagian 4-8 di bawah adalah instruksi apt lama untuk referensi.
+
 ## 1. Status ringkas
 
 | Komponen | Status | Catatan |
