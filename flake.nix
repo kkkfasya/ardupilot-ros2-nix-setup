@@ -97,6 +97,7 @@
             pkgs.geographiclib
             pkgs.sfml
             pkgs.xterm
+            pkgs.git
             (ros.buildEnv {
               underlay = true;
               paths = [
@@ -117,6 +118,7 @@
             export JAVA_HOME="${pkgs.jdk17}"
             export MICRO_XRCE_DDS_GEN_SRC="${microXrceDdsGenSrc}"
             export ARDU_WS_SRC="${wsSrc}"
+            export PATH="$PATH:$HOME/sim/ardu_ws/src/ardupilot/Tools/autotest"
 
             export ARDUPILOT_SRC="${ardupilot}"
             export ARDUPILOT_GAZEBO_SRC="${ardupilot_gazebo}"
@@ -124,6 +126,44 @@
             export MICRO_ROS_AGENT_SRC="${micro_ros_agent}"
             export ROS_GZ_SRC="${ros_gz}"
             export SDFORMAT_URDF_SRC="${sdformat_urdf}"
+
+            ardu_ws_init() {
+              local ws="''${1:-$HOME/sim/ardu_ws}"
+              mkdir -p "$ws/src"
+              for repo in ardupilot ardupilot_gazebo ardupilot_gz micro_ros_agent ros_gz sdformat_urdf; do
+                [ -e "$ws/src/$repo" ] || ln -s "$ARDU_WS_SRC/src/$repo" "$ws/src/$repo"
+              done
+              ln -sfn "$MICRO_XRCE_DDS_GEN_SRC" "$ws/Micro-XRCE-DDS-Gen"
+              echo "workspace ready: $ws"
+            }
+
+            ardu_models_init() {
+              local ws="''${1:-$HOME/sim/ardu_ws}"
+              if [ ! -d "$ws/src/ardupilot_sitl_models" ]; then
+                git clone https://github.com/ArduPilot/SITL_Models.git "$ws/src/ardupilot_sitl_models"
+                git -C "$ws/src/ardupilot_sitl_models" checkout d5d6017367a509b77886379c91207edc66f77652
+              fi
+            }
+
+            ardu_build() {
+              local ws="''${1:-$HOME/sim/ardu_ws}"
+              cd "$ws"
+              colcon build --packages-up-to ardupilot_dds_tests --parallel-workers 1 --event-handlers=console_cohesion+
+            }
+
+            sim_env() {
+              local ws="''${1:-$HOME/sim/ardu_ws}"
+              if [ -f "$ws/install/setup.bash" ]; then
+                . "$ws/install/setup.bash"
+              elif [ -f "$ws/install/setup.zsh" ]; then
+                . "$ws/install/setup.zsh"
+              fi
+              export GZ_SIM_RESOURCE_PATH="''${GZ_SIM_RESOURCE_PATH:+$GZ_SIM_RESOURCE_PATH:}$ws/install/ardupilot_gazebo/share:$ws/src/ardupilot_sitl_models:$ws/src/ardupilot_sitl_models/Models"
+            }
+
+            gz_sim_run() { sim_env "''${1:-$HOME/sim/ardu_ws}"; gz sim -v4 -r iris_runway.sdf; }
+            sitl_run() { cd "$HOME/sim/ardu_ws"; sim_vehicle.py -v ArduCopter -f gazebo-iris --model JSON --console; }
+            mavros_run() { ros2 launch mavros apm.launch fcu_url:=udp://127.0.0.1:14550@; }
           '';
         };
       });
