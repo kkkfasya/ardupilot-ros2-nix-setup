@@ -39,12 +39,43 @@
           overlays = [ nix-ros-overlay.overlays.default ];
         };
         ros = pkgs.rosPackages.jazzy;
+
+        empy3 = pkgs.python3Packages.buildPythonPackage {
+          pname = "empy";
+          version = "3.3.4";
+          src = pkgs.fetchPypi {
+            pname = "empy";
+            version = "3.3.4";
+            sha256 = "1cq1izl6l87i5i3vj0jcqfksh10kpiwpr2m19vgpj530bdw4kb3k";
+          };
+          pyproject = true;
+          build-system = [ pkgs.python3Packages.setuptools ];
+          doCheck = false;
+        };
+
+        arduPython = pkgs.python3.withPackages (py: [
+          empy3
+          py.lxml
+          py.pymavlink
+          py.pyserial
+          py.geocoder
+          py.ptyprocess
+          py.dronecan
+          py.matplotlib
+          py.scipy
+          py.opencv-python
+          py.pyyaml
+        ]);
       in {
         devShells.default = pkgs.mkShell {
           name = "ardupilot-sitl";
           packages = [
             (pkgs.colcon.withExtensions [ pkgs.python3Packages.colcon-alias ])
+            arduPython
+            pkgs.mavproxy
             pkgs.geographiclib
+            pkgs.sfml
+            pkgs.xterm
             (ros.buildEnv {
               underlay = true;
               paths = [
