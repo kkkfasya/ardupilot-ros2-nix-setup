@@ -1,4 +1,7 @@
 # Setup ROS 2 Jazzy + ArduPilot SITL + Gazebo Harmonic + MAVROS dengan Nix
+> [!WARNING]
+> Setup ini menggunakan nix dan kelengkapan setup belum dapat diuji sepenuhnya mengingat author belum diterima oleh GAMAFORCE.  
+> Setup akan diupdate berkala seiring waktu dan tentunya akan dioptimasi lagi sejalan dengan pengalaman author mempelajari Nix
 
 Panduan ini dipakai untuk pelatihan Vision & Control Programmer Gamaforce 2027. Branch `nix` memakai flake, jadi ROS 2 Jazzy, Gazebo Harmonic, MAVROS, Python ArduPilot, JDK 17, dan Gradle tidak dipasang lewat apt. Semua versi dikunci di `flake.lock`.
 
