@@ -19,6 +19,7 @@
           name = "ardupilot-sitl";
           packages = [
             (pkgs.colcon.withExtensions [ pkgs.python3Packages.colcon-alias ])
+            pkgs.geographiclib
             (ros.buildEnv {
               underlay = true;
               paths = [
@@ -28,6 +29,8 @@
                 ros.python-cmake-module
                 ros.ros-gz
                 ros.gz-launch-vendor
+                ros.mavros
+                ros.mavros-extras
               ];
             })
           ];
