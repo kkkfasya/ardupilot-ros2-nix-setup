@@ -1,5 +1,56 @@
 {
   "nodes": {
+    "ardupilot": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1791844638,
+        "narHash": "sha256-fROtW9k8YWxxYY8x/eTg8oO/zB4Djc/Pg3gyMuU2khg=",
+        "owner": "ArduPilot",
+        "repo": "ardupilot",
+        "rev": "fb773567896014da007bca58358704d4a0d8516f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ArduPilot",
+        "repo": "ardupilot",
+        "rev": "fb773567896014da007bca58358704d4a0d8516f",
+        "type": "github"
+      }
+    },
+    "ardupilot_gazebo": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1775403559,
+        "narHash": "sha256-zpsLwDSpR48ktl3oa0gg52BI2HsNSyen+1kJ4emQLus=",
+        "owner": "ArduPilot",
+        "repo": "ardupilot_gazebo",
+        "rev": "cc0290d964dfa373531963a8fc39093a0836af0a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ArduPilot",
+        "repo": "ardupilot_gazebo",
+        "rev": "cc0290d964dfa373531963a8fc39093a0836af0a",
+        "type": "github"
+      }
+    },
+    "ardupilot_gz": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1774427236,
+        "narHash": "sha256-C6IPfvm6D4wY4TZDD50A5VtszShHUhJztc+IIdF8jXc=",
+        "owner": "ArduPilot",
+        "repo": "ardupilot_gz",
+        "rev": "ba6f4e1910b5661af3905d263ea1b20e3fb4dc48",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ArduPilot",
+        "repo": "ardupilot_gz",
+        "rev": "ba6f4e1910b5661af3905d263ea1b20e3fb4dc48",
+        "type": "github"
+      }
+    },
     "flake-utils": {
       "inputs": {
         "systems": "systems"
@@ -15,6 +66,23 @@
       "original": {
         "owner": "numtide",
         "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "micro_ros_agent": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1788544751,
+        "narHash": "sha256-XB4OWS5GxMqzVgGnlrSDTUvxZzbZ5iRCXgw91oIgONE=",
+        "owner": "micro-ROS",
+        "repo": "micro-ROS-Agent",
+        "rev": "7c932329ad5591ef23942ef1962534258c16b000",
+        "type": "github"
+      },
+      "original": {
+        "owner": "micro-ROS",
+        "repo": "micro-ROS-Agent",
+        "rev": "7c932329ad5591ef23942ef1962534258c16b000",
         "type": "github"
       }
     },
@@ -57,11 +125,34 @@
     },
     "root": {
       "inputs": {
+        "ardupilot": "ardupilot",
+        "ardupilot_gazebo": "ardupilot_gazebo",
+        "ardupilot_gz": "ardupilot_gz",
+        "micro_ros_agent": "micro_ros_agent",
         "nix-ros-overlay": "nix-ros-overlay",
         "nixpkgs": [
           "nix-ros-overlay",
           "nixpkgs"
-        ]
+        ],
+        "ros_gz": "ros_gz",
+        "sdformat_urdf": "sdformat_urdf"
+      }
+    },
+    "ros_gz": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1794383719,
+        "narHash": "sha256-5FZRPjItztoN2KOjjhIH2rsapiCXLxZhYozFNk/Jdfc=",
+        "owner": "gazebosim",
+        "repo": "ros_gz",
+        "rev": "98b83c5a075f350c143b3b403fc4482ebed180c0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "gazebosim",
+        "repo": "ros_gz",
+        "rev": "98b83c5a075f350c143b3b403fc4482ebed180c0",
+        "type": "github"
       }
     },
     "rosdistro": {
@@ -77,6 +168,23 @@
       "original": {
         "owner": "ros",
         "repo": "rosdistro",
+        "type": "github"
+      }
+    },
+    "sdformat_urdf": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1784551546,
+        "narHash": "sha256-bjYqLB7T06pIKZ8RnkOIWFO9Wsky8zuKJsr2AHalYV8=",
+        "owner": "ros",
+        "repo": "sdformat_urdf",
+        "rev": "36378d23ecac42945caf262763bdffd7995eeeee",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ros",
+        "repo": "sdformat_urdf",
+        "rev": "36378d23ecac42945caf262763bdffd7995eeeee",
         "type": "github"
       }
     },
